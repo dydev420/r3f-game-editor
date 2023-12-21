@@ -11,7 +11,9 @@ export const nullActor = {
 export const emptyGrid = {
   gridCell: [0, 0],
   terrainType: 'ground',
-  objects: []
+  terrainRef: createRef(null),
+  objects: [],
+
 }
 
 export default create(subscribeWithSelector((set, get) => {
@@ -96,7 +98,7 @@ export default create(subscribeWithSelector((set, get) => {
         return {
           editorTarget: {
             ...state.editorTarget,
-            name: null
+            name: null,
           }
         };
       })
@@ -109,7 +111,8 @@ export default create(subscribeWithSelector((set, get) => {
         return {
           editorTarget: {
             ...state.editorTarget,
-            name: targetName
+            name: targetName,
+            type: type
           }
         };
       })

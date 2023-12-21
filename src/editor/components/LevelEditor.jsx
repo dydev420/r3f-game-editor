@@ -44,18 +44,19 @@ export default function LevelEditor({
   }, [gridSize]);
 
   useFrame(() => {
-    console.log('Actors', actors);
+    // console.log('Actors', actors);
+    // console.log('Grid', grid);
   });
 
 return (
     <>
       {
         grid.map((rows, i) => {
-          const cells = rows.map((cell, j) => {
+          const cells = rows.map((column, j) => {
             return (
               <GridBlock
                 key={`$grid-block-${i}-${j}`}
-                position={[i * blockSize , 0, j * blockSize]}
+                cell={column.gridCell}
                 blockSize={blockSize}
               />
             )
