@@ -20,7 +20,8 @@ import actorMap from "../mappings/actors";
  */
 const debugActors = [
   'boxy',
-  'sage'
+  'sage',
+  'mustang'
 ];
 
 /**

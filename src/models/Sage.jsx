@@ -24,7 +24,8 @@ export function Sage(props) {
     </group>
   );
 }
- export default Sage;
+
+export default Sage;
 
 useGLTF.preload("./sage.gltf");
 

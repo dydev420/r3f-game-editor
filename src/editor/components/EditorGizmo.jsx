@@ -17,6 +17,7 @@ function EditorGizmo({
         <TransformControls
           object={scene.getObjectByName(editorTarget.name)}
           mode={TRANSFORM_MODES[editorTarget.mode]}
+          size={0.5}
         />
       )    
     }

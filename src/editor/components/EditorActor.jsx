@@ -47,7 +47,7 @@ function EditorActor({
   const handleClick = (e) => {
     e.stopPropagation();
 
-    updateTarget(name);
+    updateTarget(name, 'actor');
   }
 
   const handlePointerMiss = () => {
