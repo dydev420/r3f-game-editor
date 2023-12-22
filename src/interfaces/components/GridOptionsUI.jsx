@@ -21,13 +21,10 @@ function GridOptionsUI() {
     if(showGridOptions) {
       if(currentDomDisplay !== 'block') {
         uiRef.current.style.display = 'block';
-        console.log('Show block', currentDomDisplay);
       }
     } else {
       if(currentDomDisplay !== 'none') {
         uiRef.current.style.display = 'none';
-    
-        console.log('Hide block', currentDomDisplay);
       }
     }
   });

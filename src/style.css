@@ -108,8 +108,9 @@ body,
     left: 50%;
     width: 70%;
     transform: translateX(-50%);
-    pointer-events: all;
     display: flex;
+    pointer-events: auto;
+    cursor: pointer;
 }
 
 .grid-options .card-stack
