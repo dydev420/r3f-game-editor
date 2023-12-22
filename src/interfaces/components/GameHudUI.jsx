@@ -3,7 +3,7 @@ import useGame from "./stores/useGame";
 import { useEffect, useRef } from "react";
 import { addEffect } from "@react-three/fiber";
 
-function Interface() {
+function GameHudUI() {
   const time = useRef();
   const restart = useGame((state) => state.restart);
   const phase = useGame((state) => state.phase);
@@ -76,4 +76,5 @@ function Interface() {
   );
 }
 
-export default Interface
+export default GameHudUI;
+

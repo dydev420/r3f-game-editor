@@ -99,6 +99,7 @@ export default create(subscribeWithSelector((set, get) => {
           editorTarget: {
             ...state.editorTarget,
             name: null,
+            type: null,
           }
         };
       })

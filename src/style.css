@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 html,
 body,
 #root
@@ -92,4 +96,37 @@ body,
 .controls .key.active
 {
     background: #ffffff99;
+}
+
+/**
+ * GridOptions
+ */
+.grid-options
+{
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    width: 70%;
+    transform: translateX(-50%);
+    pointer-events: all;
+    display: flex;
+}
+
+.grid-options .card-stack
+{
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    height: 144px;
+    padding: 8px;
+    background: #ffffff44;
+}
+
+.grid-options .card {
+    width: 30%;
+    height: 100%;
+    margin: 0px 4px;
+    outline: 2px solid #ffeeee;
+    background: #ffffff66;
 }

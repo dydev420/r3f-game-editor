@@ -24,6 +24,7 @@ function GridBlock({
    */
   const grid = useLevelEditorStore(state => state.grid);
   const editorTarget = useLevelEditorStore(state => state.editorTarget);
+  const updateTarget = useLevelEditorStore(state => state.updateTarget);
   const resetTarget = useLevelEditorStore(state => state.resetTarget);
 
   /**
