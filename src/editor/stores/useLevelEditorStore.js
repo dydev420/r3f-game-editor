@@ -10,11 +10,14 @@ export const nullActor = {
 
 export const emptyGrid = {
   gridCell: [0, 0],
-  terrainType: 'ground',
+  terrainType: 'grass',
   terrainRef: createRef(null),
-  objects: [],
-
-}
+  object: {
+    name: null,
+    type: null,
+    position: null,
+  },
+};
 
 export default create(subscribeWithSelector((set, get) => {
   return {
@@ -24,6 +27,7 @@ export default create(subscribeWithSelector((set, get) => {
     gridSeed: 0,
     gridSize: GRID_SIZE,
     grid: [ ], // 2D Array - Change it to 1D later
+    activeGridCell: null,
 
     initGrid: (size) => {
       set((state) => {
@@ -55,6 +59,37 @@ export default create(subscribeWithSelector((set, get) => {
     },
 
     /**
+     * Updates grid array when new object is added to any cell
+     */
+    setBlockObject: (cell, object) => {
+      const grid = get().grid;
+
+      grid[cell[0]][cell[1]].object = object;
+    },
+
+    /**
+     * Mutates the item inside grids array
+     */
+    setBlockTerrain: (cell, terrainType) => {
+      const grid = get().grid;
+      const gridInfo = grid[cell[0]][cell[1]];
+
+      gridInfo.terrainType = terrainType;
+      grid[cell[0]][cell[1]] = gridInfo;
+    },
+
+    /**
+     * Set active cell of the grid
+     */
+    setActiveBlock: (cell) => {
+      set(() => {
+        return {
+          activeGridCell: cell
+        };
+      });
+    },
+
+    /**
      * Actors in Level
      */
     actors: [],
@@ -76,12 +111,11 @@ export default create(subscribeWithSelector((set, get) => {
     editorTarget: {
       name: null,
       mode: 0,
+      type: null
     },
 
     cycleMode: () => {
       set((state) => {
-        console.log('Cycle Mode');
-
         return {
           editorTarget: {
             ...state.editorTarget,
@@ -93,8 +127,6 @@ export default create(subscribeWithSelector((set, get) => {
     
     resetTarget: () => {
       set((state) => {
-        console.log('Resetting target: ');
-
         return {
           editorTarget: {
             ...state.editorTarget,

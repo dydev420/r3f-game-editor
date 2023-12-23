@@ -1,5 +1,6 @@
 import React from 'react'
 import GridOptionsUI from './components/GridOptionsUI';
+import GridObjectsUI from './components/GridObjectsUI';
 
 /**
  * Wrapper Component to wrap all UI Components
@@ -8,7 +9,8 @@ import GridOptionsUI from './components/GridOptionsUI';
 function Interface() {
   return (
     <div className="interface">
-      <GridOptionsUI />
+      {/* <GridOptionsUI /> */}
+      <GridObjectsUI />
     </ div>
   )
 }
