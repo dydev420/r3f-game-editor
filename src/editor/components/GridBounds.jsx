@@ -78,6 +78,7 @@ export default function GridBounds({
 
   const bounds = useRef();
 
+  const planePosition = ((gridSize - 1) * blockSize) / 2;
   const boundHalfLength = (gridSize * blockSize) / 2;
   const boundPosition = (gridSize * blockSize) / 2 - blockSize / 2;
   const endTextPosition = (gridSize * blockSize) - blockSize;
@@ -100,6 +101,15 @@ export default function GridBounds({
           <meshBasicMaterial toneMapped={false} color="red" />
         </Text>
       </Float>
+      
+      <mesh
+        position={[planePosition, -0.1, planePosition]}
+        rotation={[-Math.PI/2, 0, 0]}
+        scale={gridSize * blockSize}
+      >
+        <planeGeometry />
+        <meshStandardMaterial color="ForestGreen" />
+      </mesh>
 
       {/* RigidBody: */}
       <RigidBody
