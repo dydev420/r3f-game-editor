@@ -14,7 +14,7 @@ import Astro from "../../models/Astro";
 import { Sage } from "../../models/Sage";
 import Boxy from "../../models/Boxy";
 import actorMap from "../mappings/actors";
-import ProceduralRoad from "../../procedural/ProceduralRoad";
+import RoadSegment from "../../procedural/geometries/RoadSegment";
 
 /**
  * const debugActors
@@ -88,9 +88,11 @@ return (
         })
       }
 
-      <Line points={[[0,0,0], [0,1,1], 0, 2, 2]} />
+      {/* <Line points={[[0,0,0], [0,1,1], 0, 2, 2]} /> */}
 
-      <ProceduralRoad />
+
+
+      <RoadSegment />
 
       <EditorGizmo />
     </>
