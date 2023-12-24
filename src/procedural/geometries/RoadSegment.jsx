@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Vector3 } from 'three';
+import { Quaternion, Vector3 } from 'three';
 import { useFrame } from '@react-three/fiber';
 import { useControls } from 'leva';
 import { useSpring, animated } from '@react-spring/three';
@@ -32,6 +32,8 @@ const ePos = new Vector3(0, 0, 0);
 
 // Layer F
 const fPos = new Vector3(0, 0, 0);
+const vDir = new Vector3(0, 0, 0);
+const fUnit = new Vector3(0, 1, 0);
 
 
 function RoadSegment(props) {
@@ -92,7 +94,13 @@ function RoadSegment(props) {
     // Point
     fPos.lerpVectors(dPos, ePos, t);
 
-    return fPos
+    vDir.subVectors(ePos, dPos);
+    vDir.normalize();
+
+    const fRot = new Quaternion();
+    fRot.setFromUnitVectors(fUnit, vDir);
+
+    return { fPos, fRot };
   }
 
   
@@ -100,10 +108,12 @@ function RoadSegment(props) {
   const handleTChange = () => {
     const t = tRef.current;
     
-    const newPos = getBezierPoint(t);
+    const {fPos, fRot} = getBezierPoint(t);
+
+    trackerMesh.current.setRotationFromQuaternion(fRot);
 
     api.start({
-      position: [...newPos]
+      position: [...fPos]
     });
   }
 
