@@ -10,6 +10,7 @@ import { BLOCK_SIZE, GRID_SIZE } from './editor/utils/constants.js'
 import LevelLights from './editor/components/LevelLights.jsx'
 import IsoPerspectiveCam from './cameras/components/IsoPerspectiveCam.jsx'
 import LevelWaveFunction from './editor/components/LevelWaveFunction.jsx'
+import LevelWaveRoads from './editor/components/LevelWaveRoads.jsx'
 
 export default function Experience()
 {
@@ -51,7 +52,9 @@ export default function Experience()
 
             {/* <LevelEditor gridSize={gridSize} blockSize={blockSize} /> */}
             
-            <LevelWaveFunction gridSize={gridSize} blockSize={blockSize} />
+            {/* <LevelWaveFunction gridSize={gridSize} blockSize={blockSize} /> */}
+            
+            <LevelWaveRoads gridSize={gridSize} blockSize={blockSize} />
         
         </Physics>
 

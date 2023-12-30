@@ -8,7 +8,7 @@ import { useGLTF } from "@react-three/drei";
 export function Mustang(props) {
   const { nodes, materials } = useGLTF("/mustang.glb");
   return (
-    <group {...props} dispose={null} scale={0.5}>
+    <group {...props} dispose={null}>
       <mesh
         castShadow
         receiveShadow

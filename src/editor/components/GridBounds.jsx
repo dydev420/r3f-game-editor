@@ -111,6 +111,15 @@ export default function GridBounds({
         <meshStandardMaterial color="ForestGreen" />
       </mesh>
 
+      <mesh
+        position={[planePosition, -0.3, -planePosition]}
+        rotation={[-Math.PI/2, 0, 0]}
+        scale={gridSize * blockSize}
+      >
+        <planeGeometry />
+        <meshStandardMaterial color="ForestGreen" />
+      </mesh>
+
       {/* RigidBody: */}
       <RigidBody
         ref={bounds}
@@ -126,6 +135,21 @@ export default function GridBounds({
           restitution={0.2}
           friction={1}
         />
+
+        <CuboidCollider
+          args={[boundHalfLength , 0.1, boundHalfLength] }
+          position={[boundPosition , -0.3, -boundPosition]}
+          restitution={0.2}
+          friction={1}
+        />
+
+        <mesh
+          position={[3, 0, 2]}
+          scale={[2, 0.2, 1]}
+        >
+          <boxGeometry />
+          <meshStandardMaterial color="ForestGreen" />
+        </mesh>
       </RigidBody>
 
     </group>  
