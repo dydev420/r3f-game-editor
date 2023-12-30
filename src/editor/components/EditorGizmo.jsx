@@ -21,7 +21,6 @@ function EditorGizmo({
         />
       )    
     }
-    <OrbitControls makeDefault />
   </>
 }
 

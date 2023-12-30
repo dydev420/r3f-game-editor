@@ -7,27 +7,52 @@ import LevelEditor from './editor/components/LevelEditor.jsx'
 import { Perf } from 'r3f-perf'
 import { useControls } from 'leva'
 import { BLOCK_SIZE, GRID_SIZE } from './editor/utils/constants.js'
+import LevelLights from './editor/components/LevelLights.jsx'
+import IsoPerspectiveCam from './cameras/components/IsoPerspectiveCam.jsx'
+import LevelWaveFunction from './editor/components/LevelWaveFunction.jsx'
 
 export default function Experience()
 {
     const blocksCount = useGame((state) => state.blocksCount);
     const blocksSeed = useGame((state) => state.blocksSeed);
 
-    const { gridSize, blockSize } = useControls({
+    const {
+        gridSize,
+        blockSize,
+        showDirectionLight,
+        useGameCamera,
+        hasPlayer
+    } = useControls({
         gridSize: { value: GRID_SIZE, min: 1, max: 32, step: 2 },
         blockSize: { value: BLOCK_SIZE, min: 1, max: 32, step: 1 },
+        showDirectionLight: { value: true },
+        useGameCamera: { value: true },
+        hasPlayer: { value: false },
     });
 
     return <>
-        <Perf />
+        <Perf position="top-left" showGraph={false} />
 
         <color args={['#bdedfc']} attach="background" />
 
+        {
+            useGameCamera
+                ? <IsoPerspectiveCam makeDefault />
+                : <OrbitControls makeDefault />
+        }
+
         <Physics timeStep="vary" debug={true}>
-            <Lights />
+            {
+                showDirectionLight && <Lights />
+            }
+            {
+                hasPlayer && <Player />
+            }
+
             <LevelEditor gridSize={gridSize} blockSize={blockSize} />
             
-            {/* <Player /> */}
+            {/* <LevelWaveFunction gridSize={gridSize} blockSize={blockSize} /> */}
+        
         </Physics>
 
     </>
