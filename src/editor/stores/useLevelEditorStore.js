@@ -13,7 +13,7 @@ export const emptyGrid = {
   terrainType: 'grass',
   terrainRef: createRef(null),
   object: {
-    name: null,
+    name: 'straightH',
     type: null,
     position: null,
   },

@@ -18,6 +18,10 @@ import RoadSegment from "../../procedural/geometries/RoadSegment";
 import LevelLights from "./LevelLights";
 import CarPrefab from "../../prefabs/car/components/CarPrefab";
 import GridRoadBlocks from "./GridRoadBlocks";
+import useWaveAlt from "../hooks/useWaveAlt";
+import useWaveCollapse from "../hooks/useWaveCollapse";
+import useWaveSockets from "../hooks/useWaveSockets";
+import useWaveRoads from "../hooks/useWaveRoads";
 
 /**
  * const debugActors
@@ -36,7 +40,7 @@ const debugPositions = [
 /**
  * Main Level Component
  */
-export default function LevelEditor({
+export default function LevelWaveFunction({
   gridSize = GRID_SIZE,
   blockSize = BLOCK_SIZE,
 }) {
@@ -48,6 +52,10 @@ export default function LevelEditor({
   const grid = useLevelEditorStore(state => state.grid);
   const initGrid = useLevelEditorStore(state => state.initGrid);
 
+  /**
+   * Wave Function Collapse Hooks
+   */
+  const { waveGrid } = useWaveRoads(gridSize);
 
   useEffect(() => {
     initGrid(gridSize);
@@ -62,70 +70,37 @@ return (
     <>
       {/* {
         grid.map((rows, i) => {
-          const cells = rows.map((column, j) => {
-            return (
-              <GridBlock
-                key={`$grid-block-${i}-${j}`}
-                cell={column.gridCell}
-                blockSize={blockSize}
-              />
-            )
-          })
-
-          return <>
-            {cells}
-          </>
-        })
-      } */}
-
-      {
-        grid.map((rows, i) => {
-          const cells = rows.map((column, j) => {
+          return rows.map((column, j) => {
             return (
               <GridRoadBlocks
                 key={`$grid-road-${i}-${j}`}
                 cell={column.gridCell}
                 blockSize={blockSize}
-                type={i % 2 ? 'connectUp': 'connectLeft'}
+                type={column?.object?.name}
+                meshRotation={0}
               />
             )
-          })
+          });
+        })
+      } */}
 
-          return <>
-            {cells}
-          </>
+      {
+        waveGrid.current.map((item, i) => {
+          return (
+            <GridRoadBlocks
+              key={`$grid-road-${i}`}
+              cell={item.cell}
+              blockSize={blockSize}
+              type={item.type}
+              collapsed={item.collapsed}
+              meshRotation={item.rotation}
+            />
+          );
         })
       }
 
       <GridBounds gridSize={gridSize} blockSize={blockSize} />
       <LevelLights gridSize={gridSize} blockSize={blockSize} />
-
-      {/* {
-        debugActors.map((actorName, index) => {
-          const Actor = actorMap[actorName];
-          return (
-            <EditorActor position={debugPositions[index]} index={index} name={actorName}>
-              <Actor />
-            </EditorActor>
-          )
-        })
-      } */}
-
-      {
-        debugActors.map((actorName, index) => {
-          const TempActor = actorMap[actorName];
-          return (
-            // <EditorActor position={debugPositions[index]} index={index} name={actorName}>
-              <TempActor position={debugPositions[index]} />
-            // </EditorActor>
-          )
-        })
-      }
-
-
-      {/* <RoadSegment /> */}
-
-      <CarPrefab position={[2, 0, 2]} scale={0.02} />
 
       <EditorGizmo />
     </>

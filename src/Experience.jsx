@@ -49,9 +49,9 @@ export default function Experience()
                 hasPlayer && <Player />
             }
 
-            <LevelEditor gridSize={gridSize} blockSize={blockSize} />
+            {/* <LevelEditor gridSize={gridSize} blockSize={blockSize} /> */}
             
-            {/* <LevelWaveFunction gridSize={gridSize} blockSize={blockSize} /> */}
+            <LevelWaveFunction gridSize={gridSize} blockSize={blockSize} />
         
         </Physics>
 
