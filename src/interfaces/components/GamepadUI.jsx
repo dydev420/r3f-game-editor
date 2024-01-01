@@ -156,7 +156,7 @@ function GamepadUI() {
   
 
   return (
-    <animated.div ref={uiRef} style={fadeIn} className="grid-options">
+    <animated.div ref={uiRef} style={fadeIn} className="controller-options">
       <animated.div ref={buttonGroupRef} style={jumpIn} className="gamepad-wrapper">
         <div className="gamepad" id="gamepad">
           <GamepadIcon ref={gamepadIconRef} />

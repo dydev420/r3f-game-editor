@@ -140,13 +140,22 @@ body,
     opacity: 0.8;
 }
 
-.grid-options .gamepad-wrapper
+.controller-options
+{
+    position: absolute;
+    bottom: 5%;
+    left: 5%;
+    width: 20%;
+    display: block;
+}
+
+.controller-options .gamepad-wrapper
 {
     position: relative;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
-    height: 300px;
+    height: 150px;
     padding: 8px;
     background: #ffffff44;
     transform-origin: bottom center;
@@ -158,7 +167,7 @@ body,
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40%;
+    width: 100%;
     height: 100%;
     margin: 0px 4px;
     outline: 2px solid #ffeeee;
@@ -167,6 +176,11 @@ body,
     color: #ffffff;
     font-size: 20px;
     opacity: 0.8;
+}
+
+.gamepad svg {
+    /* display: block; */
+    height: 100%;
 }
 
 .gamepad .selected-button {
