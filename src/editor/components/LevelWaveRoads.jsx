@@ -23,6 +23,8 @@ import useWaveCollapse from "../hooks/useWaveCollapse";
 import useWaveSockets from "../hooks/useWaveSockets";
 import useWaveRoads from "../hooks/useWaveRoads";
 import Car from "../../vehicles/wheel/components/Car";
+import MustangFrame from "../../models/MustangFrame";
+import MustangWheel from "../../models/MustangWheel";
 
 /**
  * Main Level Component
@@ -67,6 +69,9 @@ return (
       </group>
 
       <Car spawnPosition={[4, 0.6, 4]} />
+
+      <MustangFrame />
+      <MustangWheel position={[0.5, 0.5, 2.5]} />
 
       <GridBounds gridSize={gridSize} blockSize={blockSize} />
       <LevelLights gridSize={gridSize} blockSize={blockSize} />

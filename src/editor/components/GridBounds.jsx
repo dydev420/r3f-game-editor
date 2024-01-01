@@ -165,6 +165,15 @@ export default function GridBounds({
           <boxGeometry />
           <meshStandardMaterial color="ForestGreen" />
         </mesh>
+
+        <mesh
+          position={[8, 0, -8]}
+          scale={[4, 8, 0.2]}
+          rotation={[Math.PI / 3, 0, 0]}
+        >
+          <boxGeometry />
+          <meshStandardMaterial color="ForestGreen" />
+        </mesh>
       </RigidBody>
 
     </group>  

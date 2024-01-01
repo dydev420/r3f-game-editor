@@ -73,9 +73,9 @@ const useGas = ({
     let finalForceMultiplier = inputAxis.x;
 
     const linvel = body.current.linvel();
-    const forwardDir = axelForward.current.clone();
+    const axelForwardDir = axelForward.current.clone();
     const reverseDir = axelForward.current.clone().negate();
-    const forwardSpeed = forwardDir.dot(vec3(linvel));
+    const forwardSpeed = axelForwardDir.dot(vec3(linvel));
     const reverseSpeed = reverseDir.dot(vec3(linvel));
 
     const normalizedSpeed = forwardSpeed / MAX_SPEED ;

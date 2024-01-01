@@ -28,6 +28,7 @@ import useDirectionVectors from "../hooks/useDirectionVectors";
 import useInputAxis from "../hooks/useInputAxis";
 import useSteering from "../hooks/useSteering";
 import Mustang from "../../../models/Mustang";
+import MustangFrame from "../../../models/MustangFrame";
 
 /**
  * Wheels Config
@@ -317,7 +318,8 @@ function Car(props) {
               </mesh>
             </CuboidCollider>
 
-            <Mustang scale={0.8} rotation={[0, -Math.PI, 0]} />
+            {/* <Mustang scale={0.8} rotation={[0, -Math.PI, 0]} /> */}
+            <MustangFrame position={chassisConfig.position} rotation={[0, -Math.PI, 0]} />
 
             {/* Sensor WheelPoints */}
             <group name="WheelPoints">

@@ -5,6 +5,7 @@ import useWheel from '../hooks/useWheel';
 import { WHEEL_NAMES, WHEEL_RADIUS, WHEEL_WIDTH } from '../utils/constants';
 import useWheelStore from '../stores/useWheelStore';
 import { CuboidCollider, interactionGroups } from '@react-three/rapier';
+import MustangWheel from '../../../models/MustangWheel';
 
 const Wheel = ({
   showRayDebug,
@@ -105,10 +106,11 @@ const Wheel = ({
   return (
     <group ref={wheelGroup} name={WHEEL_NAMES[index]} position={position}>
       <group name='wheelMesh' ref={meshGroup}>
-        <mesh name='wheelMesh' ref={mesh} rotation={[0, 0, -Math.PI/2]} >
+        {/* <mesh name='wheelMesh' ref={mesh} rotation={[0, 0, -Math.PI/2]} >
           <cylinderGeometry args={[WHEEL_RADIUS, WHEEL_RADIUS, WHEEL_WIDTH]} />
           <meshStandardMaterial color="FireBrick" wireframe />
-        </mesh>
+        </mesh> */}
+        <MustangWheel name='wheelMesh' ref={mesh} />
       </group>
     </group>
   )
