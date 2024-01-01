@@ -139,3 +139,37 @@ body,
     font-size: 20px;
     opacity: 0.8;
 }
+
+.grid-options .gamepad-wrapper
+{
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    height: 300px;
+    padding: 8px;
+    background: #ffffff44;
+    transform-origin: bottom center;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.gamepad-wrapper .gamepad {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    height: 100%;
+    margin: 0px 4px;
+    outline: 2px solid #ffeeee;
+    background: #ffffff66;
+
+    color: #ffffff;
+    font-size: 20px;
+    opacity: 0.8;
+}
+
+.gamepad .selected-button {
+    /* fill: blue; */
+    fill: #ffeeee;
+}

@@ -13,6 +13,14 @@ export const DEBUG_IMPULSE = 2;
 export const RESET_POINT_HEIGHT = 1;
 
 /**
+ * Input Control Types
+ */
+export const INPUT_TYPE_KEYBOARD = 'keyboard';
+export const INPUT_TYPE_GAMEPAD = 'gamepad';
+export const INPUT_DEADZONE = 0.12;
+
+
+/**
  * Direction Vectors
  */
 
@@ -48,7 +56,7 @@ export const FRICTION = 0;
  * 
  * Used for Suspension and Wheel
  */
-export const REST_HEIGHT = 0.5;
+export const REST_HEIGHT = 0.4;
 export const MAX_TRAVEL = 0.2;
 
 /**
@@ -90,7 +98,8 @@ export const STEER_SCALE = 1;
 /**
  * Wheel Physical Props
 */
-export const WHEEL_RADIUS = REST_HEIGHT;
+// export const WHEEL_RADIUS = REST_HEIGHT;
+export const WHEEL_RADIUS = 0.24;
 export const WHEEL_WIDTH = 0.1;
 export const WHEEL_GRIP = 1;
 export const WHEEL_MASS = 1;
@@ -101,12 +110,12 @@ export const WHEEL_GRIP_BACK = 1;
  * Wheel Positions and offsets
  */
 
-export const WHEEL_POS_FR = [0.5, WHEEL_RADIUS, -0.8];
-export const WHEEL_POS_BL = [-0.5, WHEEL_RADIUS, 0.8];
-export const WHEEL_POS_FL = [-0.5, WHEEL_RADIUS, -0.8];
-export const WHEEL_POS_BR = [0.5, WHEEL_RADIUS, 0.8];
+export const WHEEL_POS_FR = [0.6, WHEEL_RADIUS, -1];
+export const WHEEL_POS_FL = [-0.6, WHEEL_RADIUS, -1];
+export const WHEEL_POS_BL = [-0.6, WHEEL_RADIUS, 1];
+export const WHEEL_POS_BR = [0.6, WHEEL_RADIUS, 1];
 // export const WHEEL_DEFAULT_OFFSET = -0.1;
-export const WHEEL_DEFAULT_OFFSET = 0;
+export const WHEEL_DEFAULT_OFFSET = -0.1;
 
 /**
  * Wheel Debug

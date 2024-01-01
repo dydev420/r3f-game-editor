@@ -2,7 +2,7 @@ import { Vector3 } from 'three';
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 
-import { DEFAULT_FORWARD, REST_HEIGHT } from '../utils/constants';
+import { DEFAULT_FORWARD, INPUT_TYPE_GAMEPAD, INPUT_TYPE_KEYBOARD, REST_HEIGHT } from '../utils/constants';
 import { createRef } from 'react';
 
 const inputStore = ((set, get) => {
@@ -11,13 +11,26 @@ const inputStore = ((set, get) => {
       x: 0,
       y: 0
     },
+    cameraInputAxis: {
+      x: 0,
+      y: 0
+    },
+    inputType: INPUT_TYPE_KEYBOARD,
 
-    setInputX: (input) => {
+    setInputType: (type) => {
+      set(() => {
+        return {
+          inputType: type
+        };
+      });
+    },
+
+    updateInputX: (input) => {
       const inputAxis = get().inputAxis;
       inputAxis.x = input;
     },
-
-    setInputY: (input) => {
+    
+    updateInputY: (input) => {
       const inputAxis = get().inputAxis;
       inputAxis.y = input;
     },
@@ -26,6 +39,22 @@ const inputStore = ((set, get) => {
       const inputAxis = get().inputAxis;
       inputAxis.x = x;
       inputAxis.y = y;
+    },
+
+    updateCameraInputX: (input) => {
+      const cameraInputAxis = get().cameraInputAxis;
+      cameraInputAxis.x = input;
+    },
+
+    updateCameraInputY: (input) => {
+      const cameraInputAxis = get().cameraInputAxis;
+      cameraInputAxis.y = input;
+    },
+
+    updateCameraInputAxes: (x, y) => {
+      const cameraInputAxis = get().cameraInputAxis;
+      cameraInputAxis.x = x;
+      cameraInputAxis.y = y;
     },
 
 

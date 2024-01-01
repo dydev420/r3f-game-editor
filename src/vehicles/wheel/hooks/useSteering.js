@@ -59,7 +59,7 @@ const useSteering = ({
     }
 
     const rotateAxis = upDir.current.clone().normalize();
-    const rotateAngle = inputValue * (Math.PI / 6);
+    const rotateAngle = -inputValue * (Math.PI / 6);
     const rotatedAxel = rightDir.current.clone().applyAxisAngle(rotateAxis, rotateAngle);
     const rotatedForward = forwardDir.current.clone().applyAxisAngle(rotateAxis, rotateAngle);
     

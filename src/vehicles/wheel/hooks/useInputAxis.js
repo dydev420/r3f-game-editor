@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Vector3 } from "three";
 import { vec3 } from "@react-three/rapier";
-import { STEER_SCALE, WHEEL_GRIP, WHEEL_MASS } from "../utils/constants";
+import { INPUT_TYPE_KEYBOARD, STEER_SCALE, WHEEL_GRIP, WHEEL_MASS } from "../utils/constants";
 import useInputStore from "../stores/useInputStore";
 import { useKeyboardControls } from "@react-three/drei";
 
@@ -18,9 +18,9 @@ const useInputAxis = () => {
   /**
    * Input store
    */
+  const inputType = useInputStore((state) => state.inputType);
+  const setInputType = useInputStore((state) => state.setInputType);
   const inputAxis = useInputStore((state) => state.inputAxis);
-  const setInputX = useInputStore((state) => state.setInputX);
-  const setInputY = useInputStore((state) => state.setInputY);
   const updateInputAxes = useInputStore((state) => state.updateInputAxes);
   const setInputJump = useInputStore((state) => state.setInputJump);
   const setInputBoost = useInputStore((state) => state.setInputBoost);
@@ -72,14 +72,16 @@ const useInputAxis = () => {
     }
 
     if(leftward) {
-      turnMultiplier += 1;
-    }
-
-    if(rightward) {
       turnMultiplier += -1;
     }
 
-    updateInputAxes(forceMultiplier, turnMultiplier);
+    if(rightward) {
+      turnMultiplier += 1;
+    }
+
+    if(inputType === INPUT_TYPE_KEYBOARD) {
+      updateInputAxes(forceMultiplier, turnMultiplier);
+    }
   }
 
   /**
@@ -104,9 +106,20 @@ const useInputAxis = () => {
       }
     );
 
+    // Handle Boost Input
+    const unsubscribeAnyKey =  subscribeKeys(
+      (state) => state,
+      () => {
+        if(inputType !== INPUT_TYPE_KEYBOARD) {
+          setInputType(INPUT_TYPE_KEYBOARD);
+        }
+      }
+    );
+
     return () => {
       unsubscribeJump();
       unsubscribeBoost();
+      unsubscribeAnyKey()
     }
   });
 
