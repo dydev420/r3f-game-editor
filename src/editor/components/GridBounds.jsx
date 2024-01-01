@@ -1,8 +1,8 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Float, Text, useGLTF } from "@react-three/drei";
+import { Float, Text, useGLTF, useTexture } from "@react-three/drei";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
-import { BoxGeometry, Euler, MeshStandardMaterial, Quaternion, Vector3 } from "three";
+import { BoxGeometry, Euler, MeshStandardMaterial, Quaternion, RepeatWrapping, Vector2, Vector3 } from "three";
 import { BLOCK_SIZE, GRID_SIZE } from "../utils/constants";
 
 const boxGeometry = new BoxGeometry(1, 1, 1);
@@ -76,12 +76,26 @@ export default function GridBounds({
   position = [0, 0, 0]
 }) {
 
+  const floorGridTexture = useTexture('./gridTileCheck.png');
+  console.log(floorGridTexture);
+  floorGridTexture.wrapS = RepeatWrapping;
+  floorGridTexture.wrapT = RepeatWrapping;
+  floorGridTexture.repeat = new Vector2(blockSize * gridSize, blockSize * gridSize);
+
   const bounds = useRef();
 
   const planePosition = ((gridSize - 1) * blockSize) / 2;
   const boundHalfLength = (gridSize * blockSize) / 2;
   const boundPosition = (gridSize * blockSize) / 2 - blockSize / 2;
   const endTextPosition = (gridSize * blockSize) - blockSize;
+
+  const setupGridTextures = () => {
+
+  }
+
+  useEffect(() => {
+    setupGridTextures();
+  }, []);
 
   return (
     <group position={position}>
@@ -103,7 +117,8 @@ export default function GridBounds({
       </Float>
       
       <mesh
-        position={[planePosition, -0.1, planePosition]}
+        // position={[planePosition, -0.1, planePosition]}
+        position={[planePosition, 0, planePosition]}
         rotation={[-Math.PI/2, 0, 0]}
         scale={gridSize * blockSize}
       >
@@ -112,12 +127,12 @@ export default function GridBounds({
       </mesh>
 
       <mesh
-        position={[planePosition, -0.3, -planePosition]}
+        position={[planePosition, -0.2, -planePosition]}
         rotation={[-Math.PI/2, 0, 0]}
         scale={gridSize * blockSize}
       >
         <planeGeometry />
-        <meshStandardMaterial color="ForestGreen" />
+        <meshStandardMaterial map={floorGridTexture} />
       </mesh>
 
       {/* RigidBody: */}
