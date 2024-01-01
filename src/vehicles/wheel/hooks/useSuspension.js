@@ -36,7 +36,7 @@ const useSuspension = ({
   const springs = useWheelStore(state => state.springs);
 
   /**
-   * Spring Force Refs Array
+   * Spring Force Ref
    */
   const suspensionForce = useRef({
     origin: new Vector3(),
@@ -87,9 +87,9 @@ const useSuspension = ({
     const dampF = velocity * SPRING_DAMPING;
     const susF = springF + dampF;
 
-    console.log('Spring ----- offset ---', offset);
-    console.log('----springForce & offset', springF, offset);
-    console.log('----dampF & sVelocity', dampF, velocity);
+    // console.log('Spring ----- offset ---', offset);
+    // console.log('----springForce & offset', springF, offset);
+    // console.log('----dampF & sVelocity', dampF, velocity);
 
 
     const susForce = springDir.clone().multiplyScalar(susF * delta * SPRING_SCALE);
@@ -102,7 +102,8 @@ const useSuspension = ({
       direction: susForce,
     };
 
-    body.current.addForceAtPoint(susForce , wheelPos, true);
+    // body.current.addForceAtPoint(susForce , wheelPos, true);
+    body.current.applyImpulseAtPoint(susForce , wheelPos, true);
   };
 
   /**

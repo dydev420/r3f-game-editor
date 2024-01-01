@@ -108,6 +108,7 @@ function Car(props) {
    */
   const { setCameraForward } = useFollowCamera({
     body,
+    bodyMesh,
     active: followCamera
   });
 
@@ -157,9 +158,9 @@ function Car(props) {
    * Handle Ray Hit
    */
   const handleRayHit = (delta, wheelRef) => {
-    wheelRef.current.applyGas(delta);
-
     wheelRef.current.applySuspensionForce(delta);
+    
+    wheelRef.current.applyGas(delta);
 
     wheelRef.current.applySteerForce(delta);
   }
@@ -260,6 +261,10 @@ function Car(props) {
     wheelRefs.forEach((wheelRef) => {
       wheelRef.current?.updateSuspensionArrowHelper();
     });
+
+    wheelRefs.forEach((wheelRef) => {
+      wheelRef.current?.updateSteerForceArrowHelper();
+    });
   });
 
 
@@ -277,6 +282,7 @@ function Car(props) {
               <arrowHelper key={`wha-af-${wheelRef.current?.index}`} ref={wheelRef.current?.arrowAFRef} />
               <arrowHelper key={`wha-aray-${wheelRef.current?.index}`} ref={wheelRef.current?.arrowRay} />
               <arrowHelper key={`wha-asusf-${wheelRef.current?.index}`} ref={wheelRef.current?.arrowSF} />
+              <arrowHelper key={`wha-asutf-${wheelRef.current?.index}`} ref={wheelRef.current?.arrowTF} />
             </>
           ); 
         })

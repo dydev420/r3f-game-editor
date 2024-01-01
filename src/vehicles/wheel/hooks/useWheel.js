@@ -83,8 +83,10 @@ const useWheel = ({
    * Steering
    */
   const {
+    arrowTF,
     checkIfSteering,
     applySteerForce,
+    updateSteerForceArrowHelper,
   } = useSteering({
     showRayDebug, 
     index,
@@ -182,8 +184,10 @@ const useWheel = ({
     arrowRay,
     setDirVectors,
     updateArrowHelpers,
+    arrowTF,
     checkIfSteering,
     applySteerForce,
+    updateSteerForceArrowHelper,
     castSpringRay,
     checkIfRayHit,
     arrowSF,

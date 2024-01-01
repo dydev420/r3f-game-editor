@@ -15,7 +15,7 @@ const maxSpringLength = REST_HEIGHT + MAX_TRAVEL;
 /**
  * @hook useWheel
  * 
- * Logic for individual wheel of the suspension / car/ bike
+ * Logic for individual wheel of the suspension / car / bike
  *
  */
 const useWheelRay = ({
@@ -53,6 +53,15 @@ const useWheelRay = ({
    * Methods
    */
 
+  const getWheelVelocity = (index, delta, wheelPos) => {
+    const vel = new Vector3();
+    const previousPos = groundHits?.[index].origin;
+
+    vel.subVectors(wheelPos, previousPos);
+    vel.multiplyScalar(1/ delta);
+    return vel;
+  }
+
   const handleSpringRayHit = (index, delta, toi, direction, origin) => {
     const prevSpringLength = springs[index].prevLength;
     
@@ -62,6 +71,8 @@ const useWheelRay = ({
     let springOffset = (REST_HEIGHT - springLength);
     // let springVel = (springLength - prevSpringLength) / delta;
     let springVel = (prevSpringLength - springLength) / delta;
+
+    const wheelVel = getWheelVelocity(index, delta, origin);
 
     updateSpringAt(index, {
       springLength,
@@ -74,16 +85,18 @@ const useWheelRay = ({
       toi,
       origin,
       direction,
-      springOffset
+      springOffset,
+      wheelVelocity: wheelVel,
     });
   }
   
-  const handleNoSpringRayHit = (index, direction, origin) => {
+  const handleNoSpringRayHit = (index, direction, origin, wheelVel) => {
     addGroundHitAt(index, {
       toi: null,
       origin,
       direction,
-      springOffset: 0
+      springOffset: 0,
+      wheelVelocity: 0
     });
   }
 
@@ -92,7 +105,7 @@ const useWheelRay = ({
       const wheelPos = vec3(wheels[index].current.translation());
       const origin = wheelPos.clone();
       // origin.y -= 0.1;
-  
+
       const direction = upDir.current.clone();
       direction.negate();
     
@@ -128,7 +141,7 @@ const useWheelRay = ({
   };
 
   /**
-   * Check if ray hit
+   * Check if ray hit is true in groundHits array
    */
   const checkIfRayHit = () => {
     if (groundHits[index]?.toi) {

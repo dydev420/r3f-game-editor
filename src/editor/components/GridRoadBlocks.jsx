@@ -223,7 +223,8 @@ function GridRoadBlocks({
         RoadBlockType &&
           <RoadBlockType
             meshRotation={meshRotation}
-            position={[0, -0.05 * blockSize, 0]}
+            // position={[0, -0.05 * blockSize, 0]}
+            position={[0, 0, 0]}
             scale={blockSize}
           />
       }   

@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float, Line, Text, useGLTF } from "@react-three/drei";
-import { CuboidCollider, RigidBody } from "@react-three/rapier";
+import { CuboidCollider, RigidBody, TrimeshCollider } from "@react-three/rapier";
 import { BoxGeometry, Euler, MeshStandardMaterial, Quaternion, Vector3 } from "three";
 import { BlockAxe, BlockEnd, BlockLimbo, BlockSpinner, BlockStart, Bounds } from "./LevelBlocks";
 import EditorGizmo from "./EditorGizmo";
@@ -37,7 +37,8 @@ export default function LevelWaveRoads({
   /**
    * Wave Function Collapse Hooks
    */
-  // const { waveGrid } = useWaveRoads(gridSize);
+  const { waveGrid } = useWaveRoads(gridSize);
+
 
   useEffect(() => {
     initGrid(gridSize);
@@ -48,7 +49,24 @@ export default function LevelWaveRoads({
 
 return (
     <>
-      <Car spawnPosition={[4, 0, 4]} />
+      <group>
+        {
+          waveGrid.current.map((item, i) => {
+            return (
+              <GridRoadBlocks
+                key={`$grid-road-${i}`}
+                cell={item.cell}
+                blockSize={blockSize}
+                type={item.type}
+                collapsed={item.collapsed}
+                meshRotation={item.rotation}
+              />
+            );
+          })
+        }
+      </group>
+
+      <Car spawnPosition={[4, 0.6, 4]} />
 
       <GridBounds gridSize={gridSize} blockSize={blockSize} />
       <LevelLights gridSize={gridSize} blockSize={blockSize} />

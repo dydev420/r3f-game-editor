@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Vector3 } from "three";
 import { vec3 } from "@react-three/rapier";
-import { STEER_SCALE, WHEEL_GRIP, WHEEL_MASS } from "../utils/constants";
+import { STEER_SCALE, WHEEL_GRIP, WHEEL_GRIP_BACK, WHEEL_GRIP_FRONT, WHEEL_MASS } from "../utils/constants";
 import useInputStore from "../stores/useInputStore";
 import useWheelStore from "../stores/useWheelStore";
 
@@ -24,12 +24,26 @@ const useSteering = ({
   axelRight,
   axelForward,
 }) => {
+  /**
+   * Debug Arrow Ref
+   */
+  const arrowTF = useRef();
 
   /**
    * Stores
    */
   const inputAxis = useInputStore((state) => state.inputAxis);
   const wheels = useWheelStore((state) => state.wheels);
+  const groundHits = useWheelStore(state => state.groundHits);
+
+   /**
+   * Steer Force Ref
+   */
+   const steerForce = useRef({
+    origin: new Vector3(),
+    direction: new Vector3()
+  });
+
 
   /**
    * Methods
@@ -61,21 +75,35 @@ const useSteering = ({
    * Called from parent on Raycast hit handler
    */
   const applySteerForce = (delta) => {
-    if(!checkIfSteering()) {
-      return;
-    }
+    steerForce.current = {
+      origin: new Vector3(0, 0, 0),
+      direction: new Vector3(0, 0, 0),
+    };
+
+    const wheelVel = groundHits?.[index].wheelVelocity;
 
     const wheelPos = vec3(wheels[index].current.translation());
     const steerDir = axelRight.current.clone();
-    const linvel = body.current.linvel();
-    const tireWorldVel = vec3(linvel);
+    
+    const tireWorldVel = wheelVel.clone();
+    const tireGrip = index < 2 ? WHEEL_GRIP_FRONT: WHEEL_GRIP_BACK;
 
     const steerDotVel = steerDir.clone().dot(tireWorldVel);
-    const gripVelChange = -steerDotVel * WHEEL_GRIP;
+    const gripVelChange = -steerDotVel * tireGrip;
     const gripAccel = gripVelChange / delta ;
     const gripForce = steerDir.clone().multiplyScalar(gripAccel * delta * WHEEL_MASS * STEER_SCALE);
 
-    body.current.addForceAtPoint(gripForce, wheelPos, true);
+
+    /**
+     * Update steerForce Ref
+     */
+    steerForce.current = {
+      origin: wheelPos,
+      direction: gripForce,
+    };
+
+    // body.current.addForceAtPoint(gripForce, wheelPos, true);
+    body.current.applyImpulseAtPoint(gripForce, wheelPos, true);
   }
 
   /**
@@ -85,7 +113,6 @@ const useSteering = ({
    */
   const checkIfSteering = () => {
     if(Math.abs(inputAxis.y)) {
-      console.log('steering', inputAxis.y);
       rotateAxelPlane(inputAxis.y);
 
       return true;
@@ -93,6 +120,25 @@ const useSteering = ({
 
     return false;
   }
+
+  /**
+   * Arrow Helper for steer force
+   */
+  const updateSteerForceArrowHelper = () => {
+    if(showRayDebug && steerForce?.current) {
+      const {
+        direction,
+        origin,
+      } = steerForce.current;
+
+      if(arrowTF.current) {
+        arrowTF.current.position.copy(origin);
+        arrowTF.current.setDirection(direction);
+        arrowTF.current.setColor('red');
+        arrowTF.current.setLength(direction.length());
+      }
+    }
+  };
 
   /**
    * useEffect & useFrame
@@ -108,9 +154,11 @@ const useSteering = ({
 
 
   return {
+    arrowTF,
     checkIfSteering,
     applySteerForce,
     rotateAxelPlane,
+    updateSteerForceArrowHelper,
   };
 };
 

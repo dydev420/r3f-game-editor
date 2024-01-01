@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Vector3 } from "three";
 import { vec3 } from "@react-three/rapier";
-import { ACC_FORWARD, ACC_REVERSE, ACC_SCALE, BOOST_ACC, MAX_SPEED } from "../utils/constants";
+import { ACC_FORWARD, ACC_REVERSE, ACC_SCALE, BOOST_ACC, DRIVE_TRAIN_BWD, DRIVE_TRAIN_FWD, MAX_SPEED } from "../utils/constants";
 import useInputStore from "../stores/useInputStore";
 import useWheelStore from "../stores/useWheelStore";
 
@@ -24,6 +24,7 @@ const useGas = ({
   index,
   body,
   axelForward,
+  driveTrain = DRIVE_TRAIN_FWD,
 }) => {
 
   /**
@@ -46,10 +47,24 @@ const useGas = ({
    * @returns Vector with mid-point of FWD
    */
   const getDrivePosition = () => {
-    const [wheelFL, wheelFR] = wheels;
-    const wheelFLPos = vec3(wheelFL.current.translation());
-    const wheelFRPos = vec3(wheelFR.current.translation());
-    const wheelFMidPos = wheelFLPos.clone().lerp(wheelFRPos, 0.5);
+    const [wheelFL, wheelFR, wheelBL, wheelBR] = wheels;
+    let wheelLPos;
+    let wheelRPos;
+
+    if(driveTrain === DRIVE_TRAIN_FWD) {
+      wheelLPos = vec3(wheelFL.current.translation());
+      wheelRPos = vec3(wheelFR.current.translation());
+    } else {
+      wheelLPos = vec3(wheelBL.current.translation());
+      wheelRPos = vec3(wheelBR.current.translation());
+    }
+
+
+    const wheelFMidPos = new Vector3();
+    wheelFMidPos.lerpVectors(wheelLPos, wheelRPos, 0.5)
+
+    // Lower force point to add springy launch
+    wheelFMidPos.y -= 0.2
 
     return wheelFMidPos;
   }
@@ -71,7 +86,8 @@ const useGas = ({
     const isBrakingForce = (finalForceMultiplier * forwardSpeed) < 0;
 
     if(isBrakingForce) {
-      finalForceMultiplier *= BOOST_ACC * Math.abs(normalizedSpeed);
+      // finalForceMultiplier *= BOOST_ACC * Math.abs(normalizedSpeed);
+      finalForceMultiplier *= BOOST_ACC; 
     }
 
     if(!isBrakingForce && !canAccelerate) {
@@ -109,7 +125,23 @@ const useGas = ({
     return finalForce;
   }
 
+  /**
+   * Apply fake friction to stop car when not accelerating
+   * 
+   * ! BUGGY !
+   */
+  const applyFakeFriction = (delta) => {
+    const linvel = vec3(body.current.linvel());
+    const forcePosition = getDrivePosition();
+
+    linvel.y = 0;
+    
+    const frictionForce = linvel.multiplyScalar(-0.1);
+
+  }
+
   const applyGas = (delta) => {
+    // No acc force from back wheels
     if(index > 1) {
       return;
     }
@@ -117,15 +149,9 @@ const useGas = ({
     const forcePosition = getDrivePosition();   
     const forceVector =  getFinalForce(delta);
     
-    // Add force at the front wheel always ??hack??
-    body.current.addForceAtPoint(forceVector, forcePosition, true);
+    // Add impulse at the front wheel always ??hack for FWD??
+    body.current.applyImpulseAtPoint(forceVector, forcePosition, true);
 
-    /**
-     * For Debug
-     */
-    if(LOG_SUMMARY) {
-      debugSummary(forceMultiplier, finalForceMultiplier, forcePosition, forceVector);
-    }
   }
 
   /**
@@ -141,14 +167,6 @@ const useGas = ({
     }
 
     return false;
-  }
-  
-  const debugSummary = (forceMultiplier, finalForceMultiplier, forcePosition, forceVector) => {
-    console.log('FFFFFF~~~~~~~~~~~FFFFFFFF');
-    console.log('Multiplier :: finalMultiplier', forceMultiplier, finalForceMultiplier);
-    console.log('Force Position', forcePosition);
-    console.log('Force Vector :: Length', forceVector, forceVector.length());
-    console.log('~~~~~~~~~~~~~~~FFFFFF~~~~~~~~~~~~~~');
   }
 
   /**
